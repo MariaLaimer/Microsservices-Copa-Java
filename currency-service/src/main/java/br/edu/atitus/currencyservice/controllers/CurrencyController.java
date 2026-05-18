@@ -14,10 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("currency")
 public class CurrencyController {
 
-   private final CurrencyRepository repository;
+    @Value("${server.port}")
+    private String port;
 
-   @Value("${server.port}")
-   private String port;
+    @Value("${convert.sleep:0}")
+    private int sleep;
+
+   private final CurrencyRepository repository;
 
     public CurrencyController(CurrencyRepository repository) {
         this.repository = repository;
@@ -28,7 +31,11 @@ public class CurrencyController {
             @RequestParam String source,
             @RequestParam String target
 
+
     ) throws Exception {
+
+        Thread.sleep(sleep);
+
        source = source.toUpperCase();
        target = target.toUpperCase();
 
