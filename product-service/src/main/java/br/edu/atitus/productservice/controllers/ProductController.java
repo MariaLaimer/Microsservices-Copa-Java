@@ -43,22 +43,26 @@ public class ProductController {
         if (targetCurrency.equals(entity.getCurrency())) {
             convertedPrice = entity.getPrice();
         } else {
-            String nameCache="ConvertedVallue";
-            String keyCache= entity.getCurrency() + "-" + targetCurrency;
-            Double convertedVallue = cacheManager.getCache(nameCache).get(keyCache, Double.class);
-            if (convertedVallue == null) {
+            String nameCache = "ConvertedValue";
+            String keyCache = entity.getCurrency() + "-" + targetCurrency;
+
+            CurrencyResponse cachedCurrency = cacheManager.getCache(nameCache).get(keyCache, CurrencyResponse.class);
+
+            if (cachedCurrency == null) {
                 CurrencyResponse currency = currencyClient.getCurrency(entity.getCurrency(), targetCurrency);
+
                 if (currency != null) {
                     convertedPrice = entity.getPrice() * currency.conversionRate();
                     environment = environment + " - " + currency.environment();
-                    cacheManager.getCache(nameCache).put(keyCache, currency.conversionRate());
-                } else  {
-                   convertedPrice = -1.0;
+
+                    cacheManager.getCache(nameCache).put(keyCache, currency);
+                } else {
+                    convertedPrice = -1.0;
                     environment = environment + " - Currency Fallback";
                 }
             } else {
-                convertedPrice = convertedVallue + entity.getPrice();
-                environment = environment + " - " + entity.getCurrency();
+                convertedPrice = entity.getPrice() * cachedCurrency.conversionRate();
+                environment = environment + " - " + cachedCurrency.environment();
             }
         }
 
@@ -83,6 +87,4 @@ public class ProductController {
         String message = e.getMessage().replace("/r/n", "");
         return ResponseEntity.badRequest().body(message);
     }
-
 }
-
