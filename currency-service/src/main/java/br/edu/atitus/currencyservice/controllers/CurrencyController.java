@@ -37,59 +37,52 @@ public class CurrencyController {
     public ResponseEntity<CurrencyDTO> getConvert(
             @RequestParam String source,
             @RequestParam String target
+
+
     ) throws Exception {
 
-        Thread.sleep(sleep);
+        //Thread.sleep(sleep);
 
         source = source.toUpperCase();
         target = target.toUpperCase();
 
-        String dataSource = "None";
-        CurrencyEntity currency = new CurrencyEntity();
-        currency.setSourceCurrency(source);
-        currency.setTargetCurrency(target);
+        String dataSource = "Cache";
+        String nameCache = "currency";
+        // desabilitar o cache
 
-        if (source.equals(target)) {
-            currency.setConversionRate(1.0);
-        } else {
-            try {
-                Double sourceRate = 1.0;
-                Double targetRate = 1.0;
-                String nameCache = "BCBCache";
-
-
-                if (!source.equals("BRL")) {
-                    BCBResponse cacheResponse = cacheManager.getCache(nameCache).get(source, BCBResponse.class);
-
-                    if (cacheResponse == null) {
-                        cacheResponse = bcbClient.getBCBCurrency(source);
-                        if (cacheResponse.value().isEmpty()) throw new Exception("Currency Not Found " + source);
-                        cacheManager.getCache(nameCache).put(source, cacheResponse);
+        //CurrencyEntity currency = cacheManager.getCache(nameCache).get(source + target, CurrencyEntity.class);
+        CurrencyEntity currency = null;
+        if  (currency == null) {
+            currency = new CurrencyEntity();
+            currency.setSourceCurrency(source);
+            currency.setTargetCurrency(target);
+            if (source.equals(target)) {
+                currency.setConversionRate(1.0);
+            } else {
+                try {
+                    Double sourceRate = 1.0;
+                    Double targetRate = 1.0;
+                    if (!source.equals("BRL")) {
+                        BCBResponse response = bcbClient.getBCBCurrency(source);
+                        if (response.value().isEmpty()) throw new Exception("Currency Not Found" + source);
+                        sourceRate = response.value().get(0).cotacaoVenda();
                     }
-
-                    sourceRate = cacheResponse.value().get(0).cotacaoVenda();
-                }
-
-
-                if (!target.equals("BRL")) {
-                    BCBResponse cacheResponse = cacheManager.getCache(nameCache).get(target, BCBResponse.class);
-
-                    if (cacheResponse == null) {
-                        cacheResponse = bcbClient.getBCBCurrency(target);
-                        if (cacheResponse.value().isEmpty()) throw new Exception("Currency Not Found " + target);
-                        cacheManager.getCache(nameCache).put(target, cacheResponse);
+                    if (!target.equals("BRL")) {
+                        BCBResponse response = bcbClient.getBCBCurrency(target);
+                        if (response.value().isEmpty()) throw new Exception("Currency Not Found" + target);
+                        targetRate = response.value().get(0).cotacaoVenda();
                     }
-                    targetRate = cacheResponse.value().get(0).cotacaoVenda();
+                    currency.setConversionRate(sourceRate / targetRate);
+                    dataSource = "Banco Central do Brasil";
+                } catch (Exception e) {
+                    currency = repository.findBySourceCurrencyAndTargetCurrency(source, target)
+                            .orElseThrow(() -> new Exception("Currency Not Found"));
+                    dataSource = "Local database";
                 }
-
-                currency.setConversionRate(sourceRate / targetRate);
-                dataSource = "Banco Central do Brasil";
-            } catch (Exception e) {
-                currency = repository.findBySourceCurrencyAndTargetCurrency(source, target)
-                        .orElseThrow(() -> new Exception("Currency Not Found"));
-                dataSource = "Local database";
             }
+            cacheManager.getCache(nameCache).put(source + target, currency);
         }
+
 
         String enviroment = "Currency Service running on Port " + port + " - " + dataSource;
 
@@ -98,8 +91,10 @@ public class CurrencyController {
                 currency.getTargetCurrency(),
                 currency.getConversionRate(),
                 enviroment
+
         );
 
         return ResponseEntity.ok(dto);
+
     }
 }
