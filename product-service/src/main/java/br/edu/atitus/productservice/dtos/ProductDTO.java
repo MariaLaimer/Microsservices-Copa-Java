@@ -10,7 +10,8 @@ public record ProductDTO(
         Integer stock,
         Double convertedPrice,
         String environment,
-        String requestCurrency
+        String requestCurrency,
+        String imageUrl
 ) {
 }
 

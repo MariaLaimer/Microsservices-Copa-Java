@@ -17,6 +17,9 @@ public class ProductEntity {
     private Double price;
     private Integer stock;
 
+    @Column(name="iamge_url")
+    private String imageURL;
+
     public Long getId() {
         return id;
     }
