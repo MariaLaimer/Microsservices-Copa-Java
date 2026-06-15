@@ -17,7 +17,7 @@ public class ProductEntity {
     private Double price;
     private Integer stock;
 
-    @Column(name="iamge_url")
+    @Column(name="image_url")
     private String imageURL;
 
     public Long getId() {
@@ -75,5 +75,9 @@ public class ProductEntity {
     public void setStock(Integer stock) {
         this.stock = stock;
     }
+
+    public String getImageURL() {return imageURL; }
+
+    public void setImageURL(String imageURL) { this.imageURL = imageURL; }
 }
 
