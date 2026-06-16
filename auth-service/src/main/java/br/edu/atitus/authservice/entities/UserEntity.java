@@ -35,9 +35,20 @@ public class UserEntity implements UserDetails{
     @JsonIgnore
     private String password;
 
+    @Column(nullable = false) 
+    private String phone;
+
     @Column
     @Enumerated(EnumType.ORDINAL)
     private UserType type;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public Long getId() {
         return id;
