@@ -1,6 +1,7 @@
 package br.edu.atitus.gatewayservice.filters;
 
 import br.edu.atitus.gatewayservice.components.JwtUtil;
+import jakarta.ws.rs.HttpMethod;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -25,7 +26,7 @@ public class AuthFilters implements GlobalFilter, Ordered {
         var request = exchange.getRequest();
         String path = request.getURI().getPath();
 
-        if (!PROTECD_ROUTES.stream().anyMatch(path::startsWith)) {
+        if (request.getMethod().matches(HttpMethod.OPTIONS) || !PROTECD_ROUTES.stream().anyMatch(path::startsWith)) {
             return chain.filter(exchange);
         }
 
