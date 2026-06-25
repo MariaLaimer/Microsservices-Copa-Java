@@ -15,6 +15,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller PÚBLICO — rotas /products/**
+ * Não exige autenticação. Qualquer cliente pode consultar produtos.
+ * Operações de escrita (POST, PUT, DELETE) ficam em WsProductController (/ws/products/**).
+ */
 @RestController
 @RequestMapping("products")
 public class ProductController {
@@ -77,7 +82,6 @@ public class ProductController {
                 String nameCache = "ConvertedValue";
                 String keyCache = product.getCurrency() + "-" + targetCurrency;
 
-
                 Cache cache = cacheManager.getCache(nameCache);
                 Double convertedValue = cache != null ? cache.get(keyCache, Double.class) : null;
 
@@ -94,9 +98,7 @@ public class ProductController {
                         convertedPrice = -1.0;
                         environment = environment + " - Currency Fallback";
                     }
-
                 } else {
-
                     convertedPrice = convertedValue * product.getPrice();
                     environment = environment + " - Currency in cache";
                 }
@@ -136,9 +138,8 @@ public class ProductController {
         if (targetCurrency.equals(entity.getCurrency())) {
             convertedPrice = entity.getPrice();
         } else {
-            String nameCache="ConvertedVallue";
-            String keyCache= entity.getCurrency() + "-" + targetCurrency;
-
+            String nameCache = "ConvertedVallue";
+            String keyCache = entity.getCurrency() + "-" + targetCurrency;
 
             Cache cache = cacheManager.getCache(nameCache);
             Double convertedVallue = cache != null ? cache.get(keyCache, Double.class) : null;
@@ -151,12 +152,11 @@ public class ProductController {
                     if (cache != null) {
                         cache.put(keyCache, currency.conversionRate());
                     }
-                } else  {
+                } else {
                     convertedPrice = -1.0;
                     environment = environment + " - Currency Fallback";
                 }
             } else {
-
                 convertedPrice = convertedVallue * entity.getPrice();
                 environment = environment + " - Currency in cache";
             }
@@ -180,9 +180,8 @@ public class ProductController {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleException(Exception e){
+    public ResponseEntity<String> handleException(Exception e) {
         String message = e.getMessage().replace("\r\n", "");
         return ResponseEntity.badRequest().body(message);
     }
-
 }

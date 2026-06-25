@@ -1,33 +1,35 @@
-ALTER TABLE tb_product ADD COLUMN image_url VARCHAR(255);
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1WlVepEwhc863OS8-ih9t18weqfiYQDCw' 
+    WHERE description = 'Tênis Nike Edição Especial da Alemanha';
 
-UPDATE tb_product SET image_url ='';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1I4WndULmjGzmEvTHQbX3z1xXbyMBIErm' 
+    WHERE description = 'Bola de Futebol Da Alemanha';
 
-UPDATE tb_product
-    SET image_url = ''
-    WHERE description = 'iPhone 15 128GB';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1UZT2amZvqZFqHMKsfR429TQ1_nWLSN2R' 
+    WHERE description = 'Camisa Do Brasil "Brasil com s de show de bola"';
 
-    SET image_url = ''
-    WHERE description = 'iPhone 15 Pro 256GB';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1oZMdXa43jnCSFsDL0emqBKGiMbdjTwHb' 
+    WHERE description = 'Moletom oficial da seleção Brasileira';
 
-    SET image_url = ''
-    WHERE description = 'Galaxy S24 256GB';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1dt0b_bO_R3gsWh7_hcd6ZObcfqWV7Rh6' 
+    WHERE description = 'Tênis Nike Edição Especial da Seleção Brasileira';
 
-    SET image_url = ''
-    WHERE description = 'Galaxy S24 Ultra 512GB';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1PfLj4IQv75qrXBn2GCwwK1e7PHjTyg16' 
+    WHERE description = 'Bola de Futebol Do Brasil';
 
-    SET image_url = ''
-    WHERE description = 'Moto G84 256GB';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1NcI9WOMOKHprZb55TzNcMgG3hs6swm3y' 
+    WHERE description = 'Cachecol de Lã dos Estados Unidos';
 
-    SET image_url = ''
-    WHERE description = 'Moto Edge 40 256GB';
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/1fcRpF9m1DoexA_9wjsbeBoUS-HS2cqBe' 
+    WHERE description = 'Tênis Nike Edição Especial da Seleção Americana';
 
-    SET image_url = ''
-    WHERE description = 'Redmi Note 13 Pro 256GB';
-
-    SET image_url = ''
-    WHERE description = 'Redmi 13C 128GB';
-
-    SET image_url = ''
-    WHERE description = 'Pixel 8 128GB';
-
-
+UPDATE tb_product 
+    SET image_url = 'https://lh3.googleusercontent.com/d/128v5VdF4SIPniBkVZ43X9GcxbkEryjuo' 
+    WHERE description = 'Boné Tematico da Argentina';

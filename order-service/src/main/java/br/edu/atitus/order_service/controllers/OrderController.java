@@ -3,6 +3,8 @@ package br.edu.atitus.order_service.controllers;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import javax.naming.AuthenticationException;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -34,8 +36,11 @@ public class OrderController {
 	public ResponseEntity<OrderEntity> createOrder(
 			@RequestBody OrderDTO orderDTO,
 			@RequestHeader("X-User-Id") Long userId,
-			 @RequestHeader("X-User-Email") String userEmail,
-			 @RequestHeader("X-User-Type") Integer userType) {
+			@RequestHeader("X-User-Email") String userEmail,
+			@RequestHeader("X-User-Type") Integer userType) throws AuthenticationException {
+
+		//Apenas Common pode fazer pedido — Admin não compra na própria loja		
+		UserRoleValidator.requireCommonOrAdmin(userType);
 		
 		OrderEntity order = new OrderEntity();
         order.setOrderDate(LocalDateTime.now());
@@ -72,9 +77,14 @@ public class OrderController {
 				Pageable pageable,
 			@RequestHeader("X-User-Id") Long userId,
 			 @RequestHeader("X-User-Email") String userEmail,
-			 @RequestHeader("X-User-Type")Integer userType) {
+			 @RequestHeader("X-User-Type")Integer userType) throws AuthenticationException {
+		
+		UserRoleValidator.requireCommonOrAdmin(userType);		
+				
 		targetCurrency = targetCurrency.toUpperCase();
 		Page<OrderEntity> orders = orderService.findOrdersByCustomerId(userId, targetCurrency, pageable);
 		return ResponseEntity.ok(orders);
 	}
+
+	
 }

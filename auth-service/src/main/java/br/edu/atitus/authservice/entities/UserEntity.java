@@ -7,6 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -40,6 +42,8 @@ public class UserEntity implements UserDetails{
 
     @Column
     @Enumerated(EnumType.ORDINAL)
+    @JsonSerialize(using = UserTypeSerializer.class)
+    @JsonDeserialize(using = UserTypeDeserializer.class)
     private UserType type;
 
     public String getPhone() {

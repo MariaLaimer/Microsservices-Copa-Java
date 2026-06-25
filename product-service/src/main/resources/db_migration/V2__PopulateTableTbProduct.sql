@@ -1,13 +1,11 @@
+ALTER TABLE tb_product ADD COLUMN image_url VARCHAR(255);
 INSERT INTO tb_product (description, brand, model, currency, price, stock) VALUES
-  ('iPhone 15 128GB', 'Apple', 'iPhone 15', 'USD', 799.00, 15),
-  ('iPhone 15 Pro 256GB', 'Apple', 'iPhone 15 Pro', 'USD', 1099.00, 8),
-  ('Galaxy S24 256GB', 'Samsung', 'Galaxy S24', 'USD', 859.00, 12),
-  ('Galaxy S24 Ultra 512GB', 'Samsung', 'Galaxy S24 Ultra', 'USD', 1299.00, 6),
-  ('Moto G84 256GB', 'Motorola', 'Moto G84', 'USD', 299.00, 20),
-  ('Moto Edge 40 256GB', 'Motorola', 'Edge 40', 'USD', 599.00, 10),
-  ('Redmi Note 13 Pro 256GB', 'Xiaomi', 'Redmi Note 13 Pro', 'USD', 349.00, 18),
-  ('Redmi 13C 128GB', 'Xiaomi', 'Redmi 13C', 'USD', 179.00, 25),
-  ('Pixel 8 128GB', 'Google', 'Pixel 8', 'USD', 699.00, 9),
-  ('Pixel 8 Pro 256GB', 'Google', 'Pixel 8 Pro', 'USD', 999.00, 7),
-  ('OnePlus 12 256GB', 'OnePlus', 'OnePlus 12', 'USD', 799.00, 11),
-  ('Galaxy A55 128GB', 'Samsung', 'Galaxy A55', 'USD', 399.00, 22);
+  ('Tênis Nike Edição Especial da Alemanha', 'Nike', 'Air Max Germany', 'USD', 160.00, 10),
+  ('Bola de Futebol Da Alemanha', 'Adidas', 'Al Rihla Germany', 'USD', 35.00, 25),
+  ('Camisa Do Brasil "Brasil com s de show de bola"', 'Nike', 'Seleção Canarinho V1', 'USD', 65.00, 50),
+  ('Moletom oficial da seleção Brasileira', 'Nike', 'Moletom CBF Windrunner', 'USD', 85.00, 15),
+  ('Tênis Nike Edição Especial da Seleção Brasileira', 'Nike', 'Shox Brazil Edition', 'USD', 180.00, 8),
+  ('Bola de Futebol Do Brasil', 'Nike', 'CBF Strike', 'USD', 32.00, 30),
+  ('Cachecol de Lã dos Estados Unidos', 'Nike', 'USA Scarf Classic', 'USD', 25.00, 12),
+  ('Tênis Nike Edição Especial da Seleção Americana', 'Nike', 'Air Force 1 USA', 'USD', 145.00, 14),
+  ('Boné Tematico da Argentina', 'Adidas', 'AFA Cap 3 Stars', 'USD', 28.00, 20);

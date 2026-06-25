@@ -36,15 +36,22 @@ public class AuthController {
     private UserEntity convertDTO2Entity(SignupDTO dto) {
         var user = new UserEntity();
         BeanUtils.copyProperties(dto, user);
+        // Usa o tipo enviado pelo frontend ("Admin"/"Common").
+        // Se vier nulo (cliente antigo), assume Common por segurança.
+        user.setType(dto.type() != null ? dto.type() : UserType.Common);
         return user;
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<UserEntity> signup(@RequestBody SignupDTO dto) throws Exception {
+    public ResponseEntity<SigninResponseDTO> signup(@RequestBody SignupDTO dto) throws Exception {
         var user = convertDTO2Entity(dto);
-        user.setType(UserType.Common);
         service.save(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+
+        // Retorna { user, token } igual ao signin, para que o app já
+        // persista a sessão e reconheça o usuário (Admin/Common) na hora.
+        String token = JwtUtil.generateToken(user.getEmail(), user.getId(), user.getType());
+        SigninResponseDTO response = new SigninResponseDTO(user, token);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/signin")
