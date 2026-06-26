@@ -2,7 +2,9 @@ package br.edu.atitus.order_service.clients;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "product-service")
 public interface ProductClient {
@@ -12,4 +14,7 @@ public interface ProductClient {
     
     @GetMapping("/products/{id}?targetCurrency={targetCurrency}")
     ProductResponse getProductByIdWithCurrency(@PathVariable Long id, @PathVariable String targetCurrency);
+
+    @PutMapping("/ws/products/{idProduct}/stock")
+    void deductStock(@PathVariable Long idProduct, @RequestParam Integer quantity);
 }

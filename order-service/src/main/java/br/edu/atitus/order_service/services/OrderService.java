@@ -26,7 +26,9 @@ public class OrderService {
     }
 
     public OrderEntity createOrder(OrderEntity order, Long userId) {
-        
+        for (OrderItemEntity item : order.getItems()) {
+            productClient.deductStock(item.getProductId(), item.getQuantity());
+        }
         return orderRepository.save(order);
     }
 

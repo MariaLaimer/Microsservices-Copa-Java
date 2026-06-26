@@ -1,3 +1,5 @@
+ALTER TABLE tb_product ADD COLUMN IF NOT EXISTS image_url VARCHAR(255);
+
 UPDATE tb_product 
     SET image_url = 'https://lh3.googleusercontent.com/d/1WlVepEwhc863OS8-ih9t18weqfiYQDCw' 
     WHERE description = 'Tênis Nike Edição Especial da Alemanha';

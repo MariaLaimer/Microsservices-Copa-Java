@@ -71,6 +71,32 @@ public class WsProductController {
     }
 
     /**
+     * Deduz o estoque de um produto (chamado pelo order-service ao criar pedido).
+     * Aceito: Common (via gateway) ou interno (via Feign, sem header).
+     */
+    @PutMapping("/{idProduct}/stock")
+    public ResponseEntity<ProductEntity> deductStock(
+            @PathVariable Long idProduct,
+            @RequestParam Integer quantity,
+            @RequestHeader(value = "X-User-Type", required = false) Integer type) throws AuthenticationException {
+
+        if (type != null) {
+            UserRoleValidator.requireCommonOrAdmin(type);
+        }
+
+        ProductEntity product = repository.findById(idProduct)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado!"));
+
+        if (product.getStock() < quantity) {
+            throw new RuntimeException("Estoque insuficiente para o produto: " + product.getDescription());
+        }
+
+        product.setStock(product.getStock() - quantity);
+        repository.save(product);
+        return ResponseEntity.ok(product);
+    }
+
+    /**
      * Remove um produto.
      * Permitido: apenas Admin (X-User-Type = 0)
      */
